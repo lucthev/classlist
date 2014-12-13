@@ -1,0 +1,17 @@
+{
+  "asi": true,
+  "boss": true,
+  "quotmark": "single",
+  "undef": true,
+  "unused": true,
+  "eqeqeq": true,
+  "browser": true,
+  "devel": true,
+  "globalstrict": true,
+  "validthis": true,
+  "globals": {
+    "module": false,
+    "exports": false,
+    "require": false
+  }
+}

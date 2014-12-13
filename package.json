@@ -1,0 +1,45 @@
+{
+  "name": "classlist",
+  "version": "1.0.0",
+  "description": "Not really an Element#classList polyfill.",
+  "main": "classlist.js",
+  "scripts": {
+    "test": "browserify test/spec.js | testling",
+    "build": "browserify -s ClassList classlist.js -o classlist.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lucthev/classlist.git"
+  },
+  "keywords": [
+    "classlist",
+    "element",
+    "class",
+    "browser"
+  ],
+  "author": "Luc Thevenard <lucthevenard@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lucthev/classlist/issues"
+  },
+  "homepage": "https://github.com/lucthev/classlist",
+  "dependencies": {
+    "component-indexof": "0.0.3",
+    "trim": "0.0.1"
+  },
+  "devDependencies": {
+    "browserify": "~7.0.0",
+    "tape": "~3.0.3",
+    "testling": "~1.7.1"
+  },
+  "testling": {
+    "files": "test/*.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/5..latest",
+      "opera/11.0..latest"
+    ]
+  }
+}
