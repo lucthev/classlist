@@ -58,7 +58,7 @@ Removes one or more classes from the element. Returns the context to allow chain
 
 ### list.toggle(class [, force ])
 
-Toggles a class on the element; adds the class if it is not present, and removes it otherwise. When `force` is true, the class is always added; when false, the class is removed (i.e. `.toggle(class, true)` is equivalent to `add(class)`, and `.toggle(class, true)` is equivalent to `add(class)`). Returns the context to allow chaining.
+Toggles a class on the element; adds the class if it is not present, and removes it otherwise. When `force` is true, the class is always added; when false, the class is removed (i.e. `.toggle(class, true)` is equivalent to `.add(class)`, and `.toggle(class, false)` is equivalent to `.remove(class)`). Returns the context to allow chaining.
 
 ### list.contains(class)
 

@@ -1,6 +1,6 @@
 {
   "name": "classlist",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Not really an Element#classList polyfill.",
   "main": "classlist.js",
   "scripts": {
@@ -31,15 +31,5 @@
     "browserify": "~7.0.0",
     "tape": "~3.0.3",
     "testling": "~1.7.1"
-  },
-  "testling": {
-    "files": "test/*.js",
-    "browsers": [
-      "ie/6..latest",
-      "chrome/28..latest",
-      "firefox/22..latest",
-      "safari/5..latest",
-      "opera/11.0..latest"
-    ]
   }
 }
