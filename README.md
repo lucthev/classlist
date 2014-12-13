@@ -66,7 +66,7 @@ Returns true if the element has the given class; false otherwise.
 
 ## Browser support
 
-
+![Browser support](https://ci.testling.com/lucthev/classlist.png)
 
 ## License
 
