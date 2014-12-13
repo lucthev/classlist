@@ -66,7 +66,7 @@ Returns true if the element has the given class; false otherwise.
 
 ## Browser support
 
-![Browser support](https://ci.testling.com/lucthev/classlist.png)
+ClassList should work in just about every browser, up to and including IE6. If it doesn’t, [open an issue](https://github.com/lucthev/classlist/issues/new).
 
 ## License
 
