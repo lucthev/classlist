@@ -1,6 +1,6 @@
 'use strict';
 
-var ClassList = require('../'),
+var ClassList = require('./'),
     test = require('tape')
 
 test('ClassList#add', function (t) {
