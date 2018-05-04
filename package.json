@@ -14,7 +14,10 @@
     "classlist",
     "element",
     "class",
-    "browser"
+    "list",
+    "ie8",
+    "ie9",
+    "polyfill"
   ],
   "author": "Luc Thevenard <lucthevenard@gmail.com>",
   "license": "MIT",
@@ -22,18 +25,9 @@
     "url": "https://github.com/lucthev/classlist/issues"
   },
   "homepage": "https://github.com/lucthev/classlist",
-  "dependencies": {
-    "component-indexof": "0.0.3",
-    "trim": "0.0.1"
-  },
   "devDependencies": {
-    "browserify": "^8.0.0",
-    "karma": "0.12.31",
-    "karma-browserify": "4.0.0",
-    "karma-chrome-launcher": "0.1.7",
-    "karma-cli": "0.0.4",
-    "karma-sauce-launcher": "0.2.10",
-    "karma-tap": "1.0.3",
-    "tape": "~3.0.3"
+    "browserify": "^16.2.0",
+    "tape": "^4.9.0",
+    "standard": "^11.0.1"
   }
 }

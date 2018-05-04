@@ -1,17 +1,17 @@
-# Various programs
 browserify := ./node_modules/.bin/browserify
-karma := ./node_modules/.bin/karma
+standard := ./node_modules/.bin/standard
 
 classlist.min.js: classlist.js
 	$(browserify) -s ClassList $< -o $@
 
 clean:
-	rm -rf classlist.min.js node_modules
+	rm -f classlist.min.js
 
 test: classlist.min.js
-	$(karma) start
+	$(standard) classlist.js test.js
+	node test.js
 
 publish: classlist.min.js
 	npm publish
 
-.PHONY: clean lint test publish
+.PHONY: clean test publish

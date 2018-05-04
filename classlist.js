@@ -1,74 +1,52 @@
-'use strict';
-
 module.exports = ClassList
 
-var indexOf = require('component-indexof'),
-    trim = require('trim'),
-    arr = Array.prototype
+var arr = Array.prototype
 
-/**
- * ClassList(elem) is kind of like Element#classList.
- *
- * @param {Element} elem
- * @return {ClassList}
- */
 function ClassList (elem) {
-  if (!(this instanceof ClassList))
+  if (!(this instanceof ClassList)) {
     return new ClassList(elem)
+  }
 
-  var classes = trim(elem.className).split(/\s+/),
-      i
+  // Use RegExp instead of String#trim as the latter doesn't exist in IE <= 8
+  var className = elem.className.replace(/^\s+|\s+$/g, '')
+  var classes = className.split(/\s+/)
 
   this._elem = elem
-
   this.length = 0
 
-  for (i = 0; i < classes.length; i += 1) {
-    if (classes[i])
-      arr.push.call(this, classes[i])
+  if (!className) return
+
+  for (var i = 0; i < classes.length; i += 1) {
+    arr.push.call(this, classes[i])
   }
 }
 
-/**
- * add(class1 [, class2 [, ...]]) adds the given class(es) to the
- * element.
- *
- * @param {String} ...
- * @return {Context}
- */
+ClassList.prototype.item = function (index) {
+  if (index >= this.length) {
+    return null
+  }
+
+  return this[index]
+}
+
 ClassList.prototype.add = function () {
-  var name,
-      i
+  for (var i = 0; i < arguments.length; i += 1) {
+    var token = String(arguments[i])
 
-  for (i = 0; i < arguments.length; i += 1) {
-    name = '' + arguments[i]
-
-    if (indexOf(this, name) >= 0)
+    if (indexOf(this, token) >= 0) {
       continue
+    }
 
-    arr.push.call(this, name)
+    arr.push.call(this, token)
   }
 
   this._elem.className = this.toString()
-
-  return this
 }
 
-/**
- * remove(class1 [, class2 [, ...]]) removes the given class(es) from
- * the element.
- *
- * @param {String} ...
- * @return {Context}
- */
 ClassList.prototype.remove = function () {
-  var index,
-      name,
-      i
-
-  for (i = 0; i < arguments.length; i += 1) {
-    name = '' + arguments[i]
-    index = indexOf(this, name)
+  for (var i = 0; i < arguments.length; i += 1) {
+    var token = String(arguments[i])
+    var index = indexOf(this, token)
 
     if (index < 0) continue
 
@@ -76,43 +54,53 @@ ClassList.prototype.remove = function () {
   }
 
   this._elem.className = this.toString()
-
-  return this
 }
 
-/**
- * contains(name) determines if the element has a given class.
- *
- * @param {String} name
- * @return {Boolean}
- */
-ClassList.prototype.contains = function (name) {
-  name += ''
-  return indexOf(this, name) >= 0
+ClassList.prototype.contains = function (token) {
+  return indexOf(this, String(token)) >= 0
 }
 
-/**
- * toggle(name [, force]) toggles a class. If force is a boolean,
- * this method is basically just an alias for add/remove.
- *
- * @param {String} name
- * @param {Boolean} force
- * @return {Context}
- */
-ClassList.prototype.toggle = function (name, force) {
-  name += ''
+ClassList.prototype.toggle = function (token, force) {
+  if (force !== undefined) {
+    if (force) {
+      this.add(token)
+    } else {
+      this.remove(token)
+    }
+  } else {
+    if (this.contains(token)) {
+      this.remove(token)
+    } else {
+      this.add(token)
+    }
+  }
 
-  if (force === true) return this.add(name)
-  if (force === false) return this.remove(name)
-
-  return this[this.contains(name) ? 'remove' : 'add'](name)
+  return this.contains(token)
 }
 
-/**
- * toString() returns the className of the element.
- *
- * @return {String}
- */
+ClassList.prototype.replace = function (token, newToken) {
+  var index = indexOf(this, token)
+
+  if (index < 0) {
+    return false
+  }
+
+  arr.splice.call(this, index, 1, newToken)
+  this._elem.className = this.toString()
+  return true
+}
+
 ClassList.prototype.toString = function () {
   return arr.join.call(this, ' ')
+}
+
+// IE <= 8 doesn't have a native Array#indexOf
+function indexOf (array, item) {
+  var len = array.length
+  for (var i = 0; i < len; i += 1) {
+    if (array[i] === item) {
+      return i
+    }
+  }
+  return -1
 }

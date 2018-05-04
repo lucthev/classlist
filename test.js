@@ -1,70 +1,98 @@
-'use strict';
+const classList = require('./')
+const test = require('tape')
 
-var ClassList = require('./'),
-    test = require('tape')
+class Element {
+  constructor (className = '') {
+    this.className = className
+  }
+}
 
-test('ClassList#add', function (t) {
-  var el = document.createElement('div'),
-      list
+test('ClassList constructor', function (t) {
+  let el = new Element('a')
 
-  el.className = ' a \n '
-  list = ClassList(el)
-
+  const ClassList = classList
+  let list = new ClassList(el) // class style
   t.equal(list.length, 1)
   t.equal(list[0], 'a')
 
-  t.equal(list.add('b'), list)
-  t.equal(el.className, 'a b')
+  list = classList(el) // function style
+  t.equal(list.length, 1)
+  t.equal(list[0], 'a')
 
-  t.equal(list.add(), list)
-  t.equal(el.className, 'a b')
+  el = new Element('')
+  list = classList(el)
+  t.equal(list.length, 0)
+  t.equal(list[0], undefined)
 
-  t.equal(list.add('c', 'd', 'e'), list)
-  t.equal(el.className, 'a b c d e')
+  el = new Element('\t a   b \n ')
+  list = classList(el)
+  t.equal(list.length, 2)
+  t.equal(list[0], 'a')
+  t.equal(list[1], 'b')
 
-  t.equal('' + list, el.className)
-  t.equal(list[4], 'e')
-  t.equal(list.length, 5)
+  t.end()
+})
+
+test('ClassList#item', function (t) {
+  let el = new Element('a b c')
+  let list = classList(el)
+
+  t.equal(list.item(3), null)
+  t.equal(list.item(0), 'a')
+  t.equal(list.item(1), 'b')
+  t.equal(list.item(2), 'c')
+
+  t.end()
+})
+
+test('ClassList#add', function (t) {
+  let el = new Element('')
+  let list = classList(el)
+
+  t.equal(list.add('a'), undefined)
+
+  t.equal(list.length, 1)
+  t.equal(list[0], 'a')
+  t.equal(el.className, 'a')
+
+  t.equal(list.add('b', 'c'), undefined)
+
+  t.equal(list.length, 3)
+  t.equal(list[0], 'a')
+  t.equal(list[1], 'b')
+  t.equal(list[2], 'c')
+  t.equal(el.className, 'a b c')
 
   t.end()
 })
 
 test('ClassList#remove', function (t) {
-  var el = document.createElement('div'),
-      list
+  let el = new Element('a b c d')
+  let list = classList(el)
 
-  el.className = ' a b c  \n d e f '
-  list = new ClassList(el)
+  t.equal(list.remove('b'), undefined)
 
-  t.equal(list.length, 6)
+  t.equal(list.length, 3)
+  t.equal(list[0], 'a')
+  t.equal(list[1], 'c')
+  t.equal(list[2], 'd')
+  t.equal(el.className, 'a c d')
 
-  t.equal(list.remove(), list)
-  t.equal(list.length, 6)
-  t.equal(el.className, 'a b c d e f')
+  t.equal(list.remove('c', 'd'), undefined)
 
-  t.equal(list.remove('c'), list)
-  t.equal(el.className, 'a b d e f')
-
-  t.equal(list.remove('b', 'f', 'a'), list)
-  t.equal(el.className, 'd e')
-
-  t.equal('' + list, el.className)
-  t.equal(list.length, 2)
-  t.equal(list[0], 'd')
-  t.equal(list[1], 'e')
+  t.equal(list.length, 1)
+  t.equal(list[0], 'a')
+  t.equal(list[1], undefined)
+  t.equal(el.className, 'a')
 
   t.end()
 })
 
 test('ClassList#contains', function (t) {
-  var el = document.createElement('div'),
-      list
-
-  el.className = 'a b c'
-  list = new ClassList(el)
+  let el = new Element('a b c')
+  let list = classList(el)
 
   t.equal(list.length, 3)
-
   t.ok(list.contains('a'))
   t.notOk(list.contains('x'))
 
@@ -72,34 +100,47 @@ test('ClassList#contains', function (t) {
 })
 
 test('ClassList#toggle', function (t) {
-  var el = document.createElement('div'),
-      list
+  let el = new Element('a b c')
+  let list = classList(el)
 
-  el.className = 'a b'
-  list = ClassList(el)
+  t.ok(list.toggle('d'))
+  t.equal(list.length, 4)
+  t.equal(el.className, 'a b c d')
 
+  t.notOk(list.toggle('b'))
+  t.equal(list.length, 3)
+  t.equal(el.className, 'a c d')
+
+  t.notOk(list.toggle('a', false))
   t.equal(list.length, 2)
+  t.equal(el.className, 'c d')
 
-  t.equal(list.toggle('a'), list)
-  t.equal(el.className, 'b')
+  t.ok(list.toggle('a', true))
+  t.equal(list.length, 3)
+  t.equal(el.className, 'c d a')
 
-  t.equal(list.toggle('c'), list)
-  t.equal(el.className, 'b c')
+  t.notOk(list.toggle('b', false))
+  t.equal(list.length, 3)
+  t.equal(el.className, 'c d a')
 
-  t.equal(list.toggle('b', true), list)
-  t.equal(el.className, 'b c')
+  t.ok(list.toggle('a', true))
+  t.equal(list.length, 3)
+  t.equal(el.className, 'c d a')
 
-  t.equal(list.toggle('a', false), list)
-  t.equal(el.className, 'b c')
+  t.end()
+})
 
-  t.equal(list.toggle('a', true), list)
-  t.equal(el.className, 'b c a')
+test('ClassList#replace', function (t) {
+  let el = new Element('a b c')
+  let list = classList(el)
 
-  t.equal(list.toggle('b', false), list)
-  t.equal(el.className, 'c a')
+  t.ok(list.replace('b', 'd'))
+  t.equal(list.length, 3)
+  t.equal(el.className, 'a d c')
 
-  t.equal('' + list, el.className)
-  t.equal(list.length, 2)
+  t.notOk(list.replace('x', 'y'))
+  t.equal(list.length, 3)
+  t.equal(el.className, 'a d c')
 
   t.end()
 })
