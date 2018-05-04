@@ -1,6 +1,6 @@
 {
   "name": "classlist",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Not really an Element#classList polyfill.",
   "main": "classlist.js",
   "scripts": {
