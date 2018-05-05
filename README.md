@@ -2,7 +2,7 @@
 
 This module aims to match the behaviour of [`Element#classList`][classlist], without polyfilling it.
 
-IE9 doesn’t have the native `classList`, and other browsers have incomplete implementations. This module aims to fill the gaps.
+IE9 doesn't have the native `classList`, and other browsers have incomplete implementations. This module tries to bridge the gaps.
 
 ## Installation
 
